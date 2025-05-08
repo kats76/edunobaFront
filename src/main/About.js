@@ -1,180 +1,193 @@
+// About.jsx
 import React, { useState, useEffect } from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button, Image, Card, Row, Col } from 'react-bootstrap';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  Box,
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  useMediaQuery
+} from '@mui/material';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import axios from "axios";
-import './Home.css';
-import './About.css';
+import axios from 'axios';
+import { motion } from 'framer-motion';
+import CustomNavbar from "../components/CustomNavbar";
+
+axios.defaults.withCredentials = true;
 
 const About = () => {
   const [showAside, setShowAside] = useState(false);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
-  const toggleAside = () => {
-    setShowAside(!showAside);
-  };
+  const toggleAside = () => setShowAside(!showAside);
 
-  // Obtener datos del usuario logueado
   useEffect(() => {
-    const userId = localStorage.getItem('id'); // Verificamos si el ID está en localStorage
+    const userId = localStorage.getItem('id');
+    if (!userId) return;
 
-    if (!userId) return; // Si no hay ID, no hacemos la petición
-
-    const fetchUserById = async () => {
+    const fetchUser = async () => {
       try {
-        // Obtener la información del usuario desde el backend
-        const response = await axios.get(`http://localhost:8080/api/user/byId/${userId}`, {
-          withCredentials: true, // Importante para enviar cookies automáticamente
-        });
-
-        setUser(response.data); // Almacenamos la info del usuario en el estado
-
+        const res = await axios.get(`http://localhost:8080/api/user/byId/${userId}`);
+        setUser(res.data);
       } catch (err) {
-        console.error('Error fetching user data:', err);
-        setError('Failed to fetch user data. Please check the backend server.');
+        console.error('Error fetching user:', err);
       }
     };
 
-    fetchUserById();
+    fetchUser();
   }, []);
 
-  // Obtener imagen de perfil
-  const getImageSrc = () => {
-    return user?.image
-      ? `data:image/jpeg;base64,${user.image}`
-      : '/assets/imagen_defecto.jpeg';
-  };
+  const getImageSrc = () => user?.image ? `data:image/jpeg;base64,${user.image}` : '/assets/imagen_defecto.jpeg';
 
   return (
-    <div className="about-page">
+    <Box sx={{ bgcolor: '#f9fafc', minHeight: '100vh' }}>
       {/* NAVBAR */}
-      <Navbar expand="lg" className="navbar-scroll custom-navbar shadow-sm py-3">
-        <Container>
-          <Navbar.Brand as={Link} to="/class" className="fw-bold text-white">
-            Third Class: A
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto align-items-center">
-              <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
-              <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
-              <NavDropdown title="Subjects" id="subjects-dropdown" menuVariant="dark">
-                <NavDropdown.Item as={Link} to="/math">Math</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/spanish">Spanish</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/natural">Natural Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/social">Social Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/english">English</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/art">Art</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title="User Access" id="user-dropdown" menuVariant="dark">
-                <NavDropdown.Item as={Link} to="/userLogin">Login</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/userRegister">Register</NavDropdown.Item>
-              </NavDropdown>
-              <Nav.Link as={Link} to="/contact" className="text-white">Contact</Nav.Link>
-              <Button variant="link" onClick={toggleAside} className="p-0 ms-4 small-button">
-                <Image src={getImageSrc()} roundedCircle className="small-avatar" />
-              </Button>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <CustomNavbar user={user} toggleAside={toggleAside} getImageSrc={getImageSrc} />
 
-      {/* ASIDE PANEL */}
-      {showAside && (
-        <aside className="user-aside">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h5 className="m-0">User Panel</h5>
-            <button className="btn-close" onClick={toggleAside}></button>
-          </div>
-          <div className="text-center">
-            <Image src={getImageSrc()} roundedCircle width="80" height="80" className="mb-3" />
+      {/* APP BAR */}
+
+      {/* DRAWER */}
+      <Drawer anchor="right" open={showAside} onClose={toggleAside}>
+        <Box sx={{ width: 300, p: 3 }}>
+          <Typography variant="h6" gutterBottom>User Panel</Typography>
+          <Box textAlign="center">
+            <Avatar src={getImageSrc()} sx={{ width: 80, height: 80, mb: 2 }} />
             {user ? (
               <>
-                <h6>{user.username}</h6>
-                <p className="text-muted small">{user.email}</p>
-                <hr />
-                <Link to="/profile" className="btn btn-primary btn-sm w-100 mb-2">Profile</Link>
-                <Button variant="outline-danger" size="sm" className="w-100">Logout</Button>
+                <Typography variant="subtitle1">{user.username}</Typography>
+                <Typography variant="body2" color="textSecondary">{user.email}</Typography>
+                <Button variant="contained" fullWidth component={Link} to="/profile" sx={{ mt: 2 }}>
+                  Profile
+                </Button>
+                <Button variant="outlined" color="error" fullWidth sx={{ mt: 1 }}>
+                  Logout
+                </Button>
               </>
             ) : (
               <>
-                <Link to="/userLogin" className="btn btn-success btn-sm w-100 mb-2">Login</Link>
-                <Link to="/userRegister" className="btn btn-outline-primary btn-sm w-100">Register</Link>
+                <Button variant="contained" color="success" fullWidth component={Link} to="/userLogin" sx={{ mt: 2 }}>
+                  Login
+                </Button>
+                <Button variant="outlined" color="primary" fullWidth component={Link} to="/userRegister" sx={{ mt: 1 }}>
+                  Register
+                </Button>
               </>
             )}
-          </div>
-        </aside>
-      )}
+          </Box>
+        </Box>
+      </Drawer>
 
-      {/* HERO */}
-      <section className="hero-section d-flex align-items-center justify-content-center text-center">
-        <h1 className="display-4 fw-bold text-white">Welcome to Edunova</h1>
-      </section>
+      {/* HERO SECTION */}
+      <Box
+        sx={{
+          height: '50vh',
+          backgroundImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(249, 250, 252, 1)), url(/assets/about.png)', // Degradado ajustado
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          textAlign: 'center',
+          marginBottom: 0, // Sin margen adicional
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Typography variant={isMobile ? 'h4' : 'h2'} fontWeight="bold">
+            About Us
+          </Typography>
+        </motion.div>
+      </Box>
 
-      {/* ABOUT SECTION */}
-      <Container className="py-5">
-        <h2 className="text-center fw-bold mb-5 text-primary">About Us</h2>
-        <Row xs={1} md={2} lg={2} className="g-4">
-          <Col>
-            <Card className="about-card shadow-sm h-100">
-              <Card.Body className="text-center">
-                <i className="bi bi-book-half text-primary display-3 mb-3"></i>
-                <Card.Text>
-                  Edunova is a platform that provides a wide range of educational resources to students and teachers,
-                  including entertaining, interactive, and informative content.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card className="about-card shadow-sm h-100">
-              <Card.Body className="text-center">
-                <i className="bi bi-laptop text-info display-3 mb-3"></i>
-                <Card.Text>
-                  Our system is designed to be user-friendly and easy to navigate, making it perfect for primary students. 
-                  It fosters creativity, imagination, and critical thinking skills through videos, images, and games.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card className="about-card shadow-sm h-100">
-              <Card.Body className="text-center">
-                <i className="bi bi-person-lines-fill text-warning display-3 mb-3"></i>
-                <Card.Text>
-                  Additionally, our system is a great tool for teachers to create engaging lesson plans and activities
-                  that cater to the needs of their students.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col>
-            <Card className="about-card shadow-sm h-100">
-              <Card.Body className="text-center">
-                <i className="bi bi-cloud-arrow-down text-success display-3 mb-3"></i>
-                <Card.Text>
-                  We are still developing our system and applying it in schools. We are confident it will make a positive 
-                  impact on education and make learning enjoyable for everyone.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+      {/* ABOUT CARDS */}
+      <Container sx={{ py: 6 }}>
+        <Grid
+          container
+          spacing={4}
+          sx={{
+            mt: 2,
+            display: 'flex',
+            justifyContent: 'center', // Centrar horizontalmente
+            alignItems: 'center', // Centrar verticalmente
+          }}
+        >
+          {[
+            {
+              icon: '📚',
+              text: 'Edunova provides a wide range of educational resources, including entertaining and interactive content.',
+            },
+            {
+              icon: '💻',
+              text: 'User-friendly and designed for primary students, it boosts creativity and critical thinking.',
+            },
+            {
+              icon: '👩‍🏫',
+              text: 'Great for teachers to create engaging lesson plans tailored to their students’ needs.',
+            },
+            {
+              icon: '☁️',
+              text: 'Still evolving, Edunova aims to make a lasting impact on learning.',
+            },
+          ].map((item, idx) => (
+            <Grid item xs={12} sm={6} md={3} key={idx}>
+              <motion.div
+                initial={{ opacity: 0, y: 50 }} // Animación inicial
+                animate={{ opacity: 1, y: 0 }} // Animación final
+                transition={{ duration: 0.5, delay: idx * 0.2 }} // Duración y retraso
+              >
+                <Paper
+                  elevation={6} // Aumenta la elevación para un sombreado más destacado
+                  sx={{
+                    p: 4,
+                    borderRadius: 3,
+                    textAlign: 'center',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    minHeight: 250, // Altura uniforme
+                    maxWidth: 250, // Ancho uniforme
+                    margin: '0 auto', // Centrar las tarjetas
+                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', // Sombreado personalizado
+                    transition: 'transform 0.3s, box-shadow 0.3s', // Transición suave
+                    '&:hover': {
+                      transform: 'scale(1.05)', // Efecto de zoom al pasar el mouse
+                      boxShadow: '0px 6px 25px rgba(0, 0, 0, 0.2)', // Sombreado más fuerte al pasar el mouse
+                    },
+                  }}
+                >
+                  <Typography variant="h3" gutterBottom>{item.icon}</Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    {item.text}
+                  </Typography>
+                </Paper>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
       </Container>
 
-
-
-      {/* Footer */}
-      <footer className="bg-primary text-white py-3 mt-0">
-        <div className="container text-center">
-          <p className="mb-0">
+      {/* FOOTER */}
+      <Box sx={{ bgcolor: '#4527a0', color: 'white', py: 3, mt: 5 }}>
+        <Container>
+          <Typography variant="body2" align="center">
             &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic learners.
-          </p>
-        </div>
-      </footer>
-    </div>
+          </Typography>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 

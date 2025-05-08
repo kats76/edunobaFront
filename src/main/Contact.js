@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from "axios";
 import './Home.css';
 import './Contact.css';
+import CustomNavbar from "../components/CustomNavbar";
 
 const Contact = () => {
   const [user, setUser] = useState(null);
@@ -57,6 +58,8 @@ const Contact = () => {
     });
   };
 
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, subject, message } = formData;
@@ -99,36 +102,7 @@ const Contact = () => {
   return (
     <div>
       {/* NAVBAR */}
-      <Navbar expand="lg" className="navbar-scroll custom-navbar shadow">
-        <Container>
-          <Navbar.Brand as={Link} to="/class" className="fw-bold text-white">
-            Third Class: A
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto align-items-center">
-              <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
-              <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
-              <NavDropdown title="Subjects" id="subjects-dropdown" className="text-white">
-                <NavDropdown.Item as={Link} to="/math">Math</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/spanish">Spanish</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/natural">Natural Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/social">Social Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/english">English</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/art">Art</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title="User Access" id="user-dropdown" className="text-white">
-                <NavDropdown.Item as={Link} to="/userLogin">Login</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/userRegister">Register</NavDropdown.Item>
-              </NavDropdown>
-              <Nav.Link as={Link} to="/contact" className="text-white">Contact</Nav.Link>
-              <Button variant="link" onClick={toggleAside} className="p-0 ms-4 small-button">
-                <Image src={getImageSrc()} roundedCircle className="small-avatar" />
-              </Button>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <CustomNavbar user={user} toggleAside={toggleAside} getImageSrc={getImageSrc} />
 
       {/* ASIDE DERECHO */}
       {showAside && (

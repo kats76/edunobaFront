@@ -1,125 +1,231 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+// src/main/subjects/Subjects.jsx
+import React, { useEffect, useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Button,
+  Grid,
+  Paper,
+  Box,
+  IconButton,
+  Avatar,
+  Drawer
+} from '@mui/material';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { motion } from 'framer-motion';
+import axios from 'axios';
+import CustomNavbar from '../../components/CustomNavbar';
+
+axios.defaults.withCredentials = true;
+
+const subjects = [
+  {
+    title: 'Math',
+    desc: 'Explore the world of numbers and logic.',
+    color: 'warning',
+    to: '/math',
+  },
+  {
+    title: 'Spanish',
+    desc: 'Master the language of culture and communication.',
+    color: 'error',
+    to: '/spanish',
+  },
+  {
+    title: 'Natural Sciences',
+    desc: 'Discover the wonders of nature and biology.',
+    color: 'success',
+    to: '/natural',
+  },
+  {
+    title: 'Social Sciences',
+    desc: 'Understand society and its dynamics.',
+    color: 'info',
+    to: '/social',
+  },
+  {
+    title: 'English',
+    desc: 'Enhance your communication and literature skills.',
+    color: 'primary',
+    to: '/english',
+  },
+  {
+    title: 'Art',
+    desc: 'Create art and let your imagination shine!',
+    color: 'secondary',
+    to: '/art',
+  },
+];
 
 const Subjects = () => {
-    return (
-        <>
-            {/* Hero Section */}
-            <div className="container-fluid bg-gradient text-black text-center py-5" style={{ background: 'linear-gradient(90deg, #ff7b54, #ffcc29)', height: '60vh' }}>
-                <h1 className="display-3 fw-bold">Explore Your Subjects</h1>
-                <p className="lead mt-3">Learn, Grow, and Succeed with Edunova</p>
-                <Link to="/about" className="btn btn-dark btn-lg mt-4 shadow-lg">
-                    Learn More
-                </Link>
-            </div>
+  const [user, setUser] = useState(null);
+  const [showAside, setShowAside] = useState(false);
 
-            {/* Image Section */}
-            <div className="container text-center my-5">
-                <img
-                    src="/assets/alumnos.jpg"
-                    alt="Students learning"
-                    className="img-fluid shadow rounded-circle hover-effect mx-auto"
-                    style={{ maxWidth: '50%' }}
-                />
-                <p className="mt-4 text-muted">Join a community of lifelong learners.</p>
-            </div>
+  const toggleAside = () => setShowAside(!showAside);
 
-            {/* Subject Links */}
-            <Container>
-                <div className="row g-4">
-                    {/* Maths */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">Math</h5>
-                                <p className="card-text">Explore the world of numbers and logic.</p>
-                                <Link to="/math" className="btn btn-outline-warning">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+  const getImageSrc = () =>
+    user?.image
+      ? `data:image/jpeg;base64,${user.image}`
+      : '/assets/imagen_defecto.jpeg';
 
-                    {/* Spanish */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">Spanish</h5>
-                                <p className="card-text">Master the language of culture and communication.</p>
-                                <Link to="/spanish" className="btn btn-outline-danger">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+  useEffect(() => {
+    const userId = localStorage.getItem('id');
+    if (!userId) return;
 
-                    {/* Natural Science */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">Natural Sciences</h5>
-                                <p className="card-text">Discover the wonders of nature and biology.</p>
-                                <Link to="/natural" className="btn btn-outline-success">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/user/byId/${userId}`);
+        setUser(res.data);
+      } catch (err) {
+        console.error('Error fetching user:', err);
+      }
+    };
 
-                    {/* Social Science */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">Social Sciences</h5>
-                                <p className="card-text">Understand society and its dynamics.</p>
-                                <Link to="/social" className="btn btn-outline-info">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+    fetchUser();
+  }, []);
 
-                    {/* English */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">English</h5>
-                                <p className="card-text">Enhance your communication and literature skills.</p>
-                                <Link to="/english" className="btn btn-outline-primary">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <Box sx={{ bgcolor: '#f9fafc', minHeight: '100vh' }}>
+      {/* NAVBAR */}
+      <CustomNavbar toggleAside={toggleAside} getImageSrc={getImageSrc} />
 
-                    {/* Art */}
-                    <div className="col-md-4">
-                        <div className="card border-0 shadow-lg">
-                            <div className="card-body text-center">
-                                <h5 className="card-title fw-bold">Art</h5>
-                                <p className="card-text">Create art and let your imagination shine!</p>
-                                <Link to="/art" className="btn btn-outline-primary">
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Container>
+      {/* DRAWER */}
+      <Drawer anchor="right" open={showAside} onClose={toggleAside}>
+        <Box sx={{ width: 300, p: 3 }}>
+          <Typography variant="h6" gutterBottom>User Panel</Typography>
+          <Box textAlign="center">
+            <Avatar src={getImageSrc()} sx={{ width: 80, height: 80, mb: 2 }} />
+            {user ? (
+              <>
+                <Typography variant="subtitle1">{user.username}</Typography>
+                <Typography variant="body2" color="textSecondary">{user.email}</Typography>
+                <Button variant="contained" fullWidth component={Link} to="/profile" sx={{ mt: 2 }}>
+                  Profile
+                </Button>
+                <Button variant="outlined" color="error" fullWidth sx={{ mt: 1 }}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="contained" color="success" fullWidth component={Link} to="/userLogin" sx={{ mt: 2 }}>
+                  Login
+                </Button>
+                <Button variant="outlined" color="primary" fullWidth component={Link} to="/userRegister" sx={{ mt: 1 }}>
+                  Register
+                </Button>
+              </>
+            )}
+          </Box>
+        </Box>
+      </Drawer>
 
-            {/* Footer */}
-            <footer className="mt-5 bg-primary text-white py-3">
-                <div className="container text-center">
-                <p className="mb-0">
-                    &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic learners.
-                </p>
-                </div>
-            </footer>
-        </>
-    );
+      {/* HERO */}
+      <Box
+        sx={{
+          height: '60vh',
+          background: 'linear-gradient(90deg, #ff7b54, #ffcc29)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          color: '#000',
+          px: 2,
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Typography variant="h2" fontWeight="bold">
+            Explore Your Subjects
+          </Typography>
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Learn, Grow, and Succeed with Edunova
+          </Typography>
+          <Button
+            variant="contained"
+            color="inherit"
+            size="large"
+            component={Link}
+            to="/about"
+            sx={{ mt: 4 }}
+          >
+            Learn More
+          </Button>
+        </motion.div>
+      </Box>
+
+      {/* IMAGE SECTION */}
+      <Container sx={{ textAlign: 'center', py: 5 }}>
+        <motion.img
+          src="/assets/alumnos.jpg"
+          alt="Students learning"
+          style={{
+            borderRadius: '50%',
+            maxWidth: '50%',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+          }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1 }}
+        />
+        <Typography variant="body1" color="textSecondary" sx={{ mt: 3 }}>
+          Join a community of lifelong learners.
+        </Typography>
+      </Container>
+
+      {/* SUBJECT CARDS */}
+      <Container sx={{ py: 4 }}>
+        <Grid container spacing={4} alignItems="stretch" justifyContent="center">
+          {subjects.map((subject, idx) => (
+            <Grid item xs={12} sm={6} md={4} key={idx}>
+              <Paper
+                elevation={6}
+                sx={{
+                  p: 4,
+                  height: '100%',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  borderRadius: 3,
+                }}
+              >
+                <Typography variant="h5" fontWeight="bold" gutterBottom>
+                  {subject.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
+                  {subject.desc}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  color={subject.color}
+                  component={Link}
+                  to={subject.to}
+                >
+                  View Details
+                </Button>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      {/* FOOTER */}
+      <Box sx={{ bgcolor: '#4527a0', color: 'white', py: 3, mt: 5 }}>
+        <Container>
+          <Typography variant="body2" align="center">
+            &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic learners.
+          </Typography>
+        </Container>
+      </Box>
+    </Box>
+  );
 };
 
 export default Subjects;
