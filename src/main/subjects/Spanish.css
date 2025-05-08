@@ -1,0 +1,12 @@
+/* Spanish.css */
+.spanish-container {
+    background-image: url('/public/assets/spanish-final.jpeg');
+    background-size: cover;
+    background-position: top;
+    min-height: 100vh;
+    color: white;
+  }
+
+footer{
+    margin-top: 20px;
+}

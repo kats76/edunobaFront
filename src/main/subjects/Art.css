@@ -1,0 +1,12 @@
+/* Art.css */
+.art-container {
+    background-image: url('/public/assets/art.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    color: white;
+  }
+
+footer{
+    margin-top: 320px;
+}

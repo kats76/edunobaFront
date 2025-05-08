@@ -1,0 +1,94 @@
+/* Home.css */
+
+.custom-navbar {
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  padding: 0.8rem 1.5rem !important;
+  border-bottom: 2px solid white;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white !important;
+}
+
+.nav-link, .dropdown-toggle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white !important;
+  margin: 0 10px;
+}
+
+.nav-link:hover, .dropdown-toggle:hover {
+  color: #d1e8ff !important;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.dropdown-menu {
+  background-color: #0056b3;
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.navbar-scroll {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Asegura que el navbar quede por encima de otros elementos */
+  background-color: #ffffff; /* Cambia el color de fondo si es necesario */
+  border-bottom: 1px solid #ccc; /* Opcional: borde en la parte inferior */
+}
+
+
+.small-avatar {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+}
+
+.small-button {
+  font-size: 0.9rem;
+}
+
+/* ABOUT CARDS */
+.about-card {
+  border: 2px solid black !important; /* Borde sólido negro */
+  border-radius: 1rem;
+  background: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+
+.about-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.about-card i {
+  transition: transform 0.3s ease-in-out;
+}
+
+.about-card:hover i {
+transform: scale(1.1);
+}
+
+footer {
+  margin-top: 80px;
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  color: white;
+}

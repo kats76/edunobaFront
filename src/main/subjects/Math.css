@@ -1,0 +1,24 @@
+/* Math.css */
+.math-container {
+    background-image: url('/public/assets/math.jpeg'); /* Cambia por una URL válida */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    color: white;
+  }
+  
+  .math-content {
+    padding: 5rem 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  
+  .list-group-item {
+    font-size: 1.2rem;
+    border: none;
+    margin-bottom: 0.5rem;
+  }
+
+footer{
+    margin-top: 20px;
+}
+  

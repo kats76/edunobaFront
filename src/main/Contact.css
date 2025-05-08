@@ -1,0 +1,15 @@
+.image-logo{
+    margin-left: 26%;
+    height: 36%;
+    width: 36%;
+}
+
+.small-avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover; /* Asegura que la imagen no se distorsione */
+}
+  
+.small-button {
+    font-size: 0.8rem
+}

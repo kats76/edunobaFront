@@ -1,0 +1,12 @@
+/* Natural.css */
+.natural-container {
+    background-image: url('/public/assets/natural.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    color: white;
+  }
+
+footer{
+    margin-top: 20px;
+}

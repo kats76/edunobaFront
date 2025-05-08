@@ -1,0 +1,12 @@
+/* Social.css */
+.social-container {
+    background-image: url('/public/assets/social.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    color: white;
+  }
+
+footer{
+    margin-top: 20px;
+}

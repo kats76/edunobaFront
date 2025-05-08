@@ -1,0 +1,12 @@
+/* English.css */
+.english-container {
+    background-image: url('/public/assets/english-final.jpeg');
+    background-size: cover;
+    background-position: top;
+    min-height: 100vh;
+    color: white;
+  }
+
+footer{
+    margin-top: 80px;
+}
