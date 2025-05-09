@@ -87,9 +87,9 @@ const About = () => {
       {/* HERO SECTION */}
       <Box
         sx={{
-          height: '50vh',
-          backgroundImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(249, 250, 252, 1)), url(/assets/about.png)', // Degradado ajustado
-          backgroundSize: 'cover',
+          height: '60vh', // Mantener la altura del contenedor
+          backgroundImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(249, 250, 252, 1)), url(/assets/about.jpg)', // Degradado ajustado
+          backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           display: 'flex',
           alignItems: 'center',
@@ -104,7 +104,15 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <Typography variant={isMobile ? 'h4' : 'h2'} fontWeight="bold">
+          <Typography
+            variant={isMobile ? 'h4' : 'h2'}
+            fontWeight="bold"
+            sx={{
+              color: '#4527a0', // Color morado
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)', // Sombreado para destacar el texto
+              transform: 'translateY(-6px)', // Mover el texto hacia arriba 25px
+            }}
+          >
             About Us
           </Typography>
         </motion.div>

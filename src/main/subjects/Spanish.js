@@ -1,137 +1,214 @@
-import React, { useEffect, useState } from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button, Image } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../Home.css';
-import './Spanish.css';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Container,
+  useMediaQuery,
+} from "@mui/material";
+import { Navbar, Nav, NavDropdown, Image } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "../Home.css";
+import "./Spanish.css";
+import CustomNavbar from "../../components/CustomNavbar";
 
 const Spanish = () => {
   const [showAside, setShowAside] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const toggleAside = () => {
     setShowAside(!showAside);
   };
 
-  // Obtener datos del usuario logueado
-  useEffect(() => {
-    const userId = Cookies.get('id'); // Verificamos si el ID está en localStorage
+  const handleGoBack = () => {
+    navigate("/subjects");
+  };
 
-    if (!userId) return; // Si no hay ID, no hacemos la petición
+  useEffect(() => {
+    const userId = Cookies.get("id");
+    if (!userId) return;
 
     const fetchUserById = async () => {
       try {
-        // Obtener la información del usuario desde el backend
-        const response = await axios.get(`http://localhost:8080/api/user/byId/${userId}`, {
-          withCredentials: true, // Importante para enviar cookies automáticamente
-        });
-
-        setUser(response.data); // Almacenamos la info del usuario en el estado
-
+        const response = await axios.get(
+          `http://localhost:8080/api/user/byId/${userId}`,
+          { withCredentials: true }
+        );
+        setUser(response.data);
       } catch (err) {
-        console.error('Error fetching user data:', err);
-        setError('Failed to fetch user data. Please check the backend server.');
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data.");
       }
     };
 
-    fetchUserById(); // Llamamos a la función para obtener los datos del usuario
-  }, []); // Ejecutamos el useEffect solo una vez
+    fetchUserById();
+  }, []);
 
   const getImageSrc = () =>
     user?.image
       ? `data:image/jpeg;base64,${user.image}`
-      : '/assets/imagen_defecto.jpeg';
-          
-            const handleGoBack = () => {
-              navigate("/subjects"); 
-            };
+      : "/assets/imagen_defecto.jpeg";
+
   return (
-    <div className="spanish-container">
+    <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundImage: "linear-gradient(to bottom, #f7d7b4 20%, #ffffff 100%)", // Gradiente basado en #e6a662
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
       {/* NAVBAR */}
-      <Navbar expand="lg" className="navbar-scroll custom-navbar shadow">
+      <CustomNavbar toggleAside={toggleAside} getImageSrc={getImageSrc} />
+
+      {/* CONTENT */}
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          flexDirection: { xs: "column", md: "row" },
+          py: 10,
+          mt: 5,
+        }}
+      >
+        {/* Text Section */}
+        <Box sx={{ flex: 1, textAlign: "center" }}>
+          <Typography
+            variant={isMobile ? "h2" : "h1"}
+            fontWeight="bold"
+            color="#e6a662" // Título principal basado en el color
+            gutterBottom
+            sx={{ textAlign: "center" }}
+          >
+            Spanish
+          </Typography>
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{ textAlign: "left" }}
+          >
+            Welcome to the exciting world of Spanish! Let's explore the key topics we'll cover in this course.
+          </Typography>
+
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            align="left"
+            gutterBottom
+            color="#e6a662" // Subtítulos basados en el color
+            sx={{ mt: 4 }}
+          >
+            Key Spanish Topics
+          </Typography>
+
+          <ul
+            className="list-group list-group-flush bg-transparent text-dark"
+            style={{ textAlign: "left", paddingLeft: "0" }}
+          >
+            {[
+              { path: "/oral-skills", label: "Listening, Speaking, and Conversing" },
+              { path: "/reading-writing", label: "Reading and Writing" },
+              { path: "/language-awareness", label: "Language Awareness" },
+              { path: "/literary-education", label: "Literary Education" },
+            ].map((item, idx) => (
+              <li
+                className="topic-item list-group-item bg-transparent"
+                key={idx}
+                style={{
+                  textAlign: "left",
+                  cursor: "pointer",
+                  transition: "transform 0.3s, background-color 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#fbe4cc"; // Fondo al pasar el mouse
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+              >
+                <i className="bi bi-check-circle text-success me-2"></i>
+                <Link
+                  className="text-dark text-decoration-none fw-semibold"
+                  to={item.path}
+                  style={{
+                    textDecoration: "none",
+                    color: "#e6a662", // Color del texto basado en el color principal
+                    transition: "color 0.3s, font-size 0.3s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "#d18b4a"; // Color más oscuro al pasar el mouse
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "#e6a662"; // Volver al color original
+                  }}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Box>
+
+        {/* Illustration */}
+        <Box
+          component="img"
+          src="/assets/spanish.jpg"
+          alt="Spanish illustration"
+          sx={{
+            width: "50%",
+            height: "auto",
+            mt: { xs: 5, md: 0 },
+            p: 5,
+            borderRadius: 2,
+          }}
+        />
+      </Container>
+
+      {/* Botón Go Back */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 4,
+        }}
+      >
+        <Button
+          onClick={handleGoBack}
+          variant="contained" // Cambiar a "contained" para darle un estilo más destacado
+          color="error" // Usar el color primario de Material-UI
+          sx={{
+            textTransform: "none", // Evitar que el texto esté en mayúsculas
+            fontWeight: "bold", // Hacer el texto más destacado
+            px: 4, // Padding horizontal
+            py: 1.5, // Padding vertical
+            borderRadius: 2, // Bordes redondeados
+          }}
+        >
+          Go Back
+        </Button>
+      </Box>
+
+      {/* FOOTER */}
+      <Box sx={{ bgcolor: "#e6a662", color: "white", py: 3, mt: 5 }}>
         <Container>
-          <Navbar.Brand as={Link} to="/class" className="fw-bold text-white">
-            Third Class: A
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto align-items-center">
-              <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
-              <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
-              <NavDropdown title="Subjects" id="subjects-dropdown" className="text-white">
-                <NavDropdown.Item as={Link} to="/math">Math</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/spanish">Spanish</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/natural">Natural Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/social">Social Sciences</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/english">English</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/art">Art</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title="User Access" id="user-dropdown" className="text-white">
-                <NavDropdown.Item as={Link} to="/userLogin">Login</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/userRegister">Register</NavDropdown.Item>
-              </NavDropdown>
-              <Nav.Link as={Link} to="/contact" className="text-white">Contact</Nav.Link>
-              <Button variant="link" onClick={toggleAside} className="p-0 ms-4 small-button">
-                <Image src={getImageSrc()} roundedCircle className="small-avatar" />
-              </Button>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
-    {/* Social Content */}
-      <div className="math-content text-white d-flex flex-column justify-content-center align-items-center">
-        <h1 className="fw-bold">Spanish - Content Blocks</h1>
-        <p className="text-center">
-          Welcome to the exciting world of Spanish! Let's explore the key topics we'll cover in this course.
-        </p>
-        <ul className="list-group list-group-flush bg-transparent text-white">
-          <li className="list-group-item bg-transparent text-white">
-            <i className="bi bi-check-circle"></i>{' '}
-            <Link className="text-white text-decoration-none" to="/oral-skills">
-              Listening, Speaking, and Conversing
-            </Link>
-          </li>
-          <li className="list-group-item bg-transparent text-white">
-            <i className="bi bi-check-circle"></i>{' '}
-            <Link className="text-white text-decoration-none" to="/reading-writing">
-              Reading and Writing
-            </Link>
-          </li>
-          <li className="list-group-item bg-transparent text-white">
-            <i className="bi bi-check-circle"></i>{' '}
-            <Link className="text-white text-decoration-none" to="/language-awareness">
-              Language Awareness
-            </Link>
-          </li>
-          <li className="list-group-item bg-transparent text-white">
-            <i className="bi bi-check-circle"></i>{' '}
-            <Link className="text-white text-decoration-none" to="/literary-education">
-              Literary Education
-            </Link>
-          </li>
-        </ul>
-      </div>
-
-      {/* Botón para regresar */}
-      <div class="container text-center">
-        <button onClick={handleGoBack} className="rounded bg-warning p-1 ">Go Back</button>
-      </div>
-
-    {/* Footer */}
-      <footer className="bg-primary text-white py-3">
-        <div className="container text-center">
-          <p className="mb-0">
+          <Typography variant="body2" align="center">
             &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic learners.
-          </p>
-        </div>
-      </footer>
-    </div>
+          </Typography>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 
