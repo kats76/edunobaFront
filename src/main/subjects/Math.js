@@ -62,7 +62,8 @@ const Math = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "linear-gradient(to bottom, #c5d4e0 20%, #ffffff 100%)", // Gradiente más fuerte
+        backgroundImage:
+          "linear-gradient(to bottom, #c5d4e0 20%, #ffffff 100%)", // Gradiente más fuerte
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
@@ -98,7 +99,8 @@ const Math = () => {
             color="text.secondary"
             sx={{ textAlign: "left" }}
           >
-            Welcome to the exciting world of Mathematics! Let’s explore key topics and make learning fun and visual.
+            Welcome to the exciting world of Mathematics! Let’s explore key
+            topics and make learning fun and visual.
           </Typography>
 
           {/* COURSE TOPICS */}
@@ -113,44 +115,62 @@ const Math = () => {
             Key Math Topics
           </Typography>
           <ul
-  className="list-group list-group-flush bg-transparent text-dark"
-  style={{ textAlign: "left", paddingLeft: "0" }}
->
-  {[
-    { path: "/numbers", label: "Numbers and Operations" },
-    { path: "/measurement", label: "Measurement" },
-    { path: "/geometry", label: "Geometry" },
-    { path: "/statistics-probability", label: "Statistics and Probability" },
-    { path: "/problem-solving", label: "Problem Solving" },
-  ].map((item, idx) => (
-    <li
-      className="topic-item list-group-item bg-transparent"
-      key={idx}
-    >
-      <i className="bi bi-check-circle text-success me-2"></i>
-      <Link
-        className="text-dark text-decoration-none fw-semibold"
-        to={item.path}
-      >
-        {item.label}
-      </Link>
-    </li>
-  ))}
-</ul>
+            className="list-group list-group-flush bg-transparent text-dark"
+            style={{ textAlign: "left", paddingLeft: "0" }}
+          >
+            {[
+              { path: "/numbers", label: "Numbers and Operations" },
+              { path: "/measurement", label: "Measurement" },
+              { path: "/geometry", label: "Geometry" },
+              {
+                path: "/statistics-probability",
+                label: "Statistics and Probability",
+              },
+              { path: "/problem-solving", label: "Problem Solving" },
+            ].map((item, idx) => (
+              <li
+                className="topic-item list-group-item bg-transparent"
+                key={idx}
+              >
+                <i className="bi bi-check-circle text-success me-2"></i>
+                <Link
+                  className="text-dark text-decoration-none fw-semibold"
+                  to={item.path}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Box>
 
         {/* Illustration */}
+
         <Box
-          component="img"
-          src="/assets/math.jpg"
-          alt="Math illustration"
           sx={{
-            width: "50%",
-            height: "auto",
-            mt: { xs: 5, md: 0 },
-            padding: 10,
+            display: "flex", // Usar flexbox para centrar la imagen
+            flex: 1, // Asegurar que ocupe el mismo espacio que el texto
+            minHeight: "400px", // Altura mínima para la imagen
+            justifyContent: "center", // Centrar horizontalmente
+            alignItems: "center", // Centrar verticalmente
+            width: "100%", // Asegurar que ocupe todo el ancho del contenedor
+            height: "100%", // Asegurar que ocupe todo el alto del contenedor
+            mt: { xs: 5, md: 0 }, // Margen superior para pantallas pequeñas
           }}
-        />
+        >
+          <Box
+            component="img"
+            src="/assets/math.jpg"
+            alt="Math illustration"
+            sx={{
+              width: "80%", // Asegurar que la imagen no exceda el ancho del contenedor
+              height: "auto", // Asegurar que la imagen no exceda el alto del contenedor
+              objectFit: "contain", // Ajustar la imagen para que mantenga su proporción
+              borderRadius: 2, // Bordes redondeados
+              boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Sombra para destacar la imagen
+            }}
+          />
+        </Box>
       </Container>
 
       {/* BOTÓN DE REGRESO */}
@@ -177,11 +197,14 @@ const Math = () => {
           Go Back
         </Button>
       </Box>
-         {/* FOOTER */}
-      <Box sx={{ bgcolor: "#3a6b94", color: "white", py: 3, mt: 5 }}> {/* Cambiar el fondo del footer */}
+      {/* FOOTER */}
+      <Box sx={{ bgcolor: "#3a6b94", color: "white", py: 3, mt: 5 }}>
+        {" "}
+        {/* Cambiar el fondo del footer */}
         <Container>
           <Typography variant="body2" align="center">
-            &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic learners.
+            &copy; 2025 Third Class A | Designed with ❤️ for enthusiastic
+            learners.
           </Typography>
         </Container>
       </Box>

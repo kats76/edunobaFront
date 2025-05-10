@@ -162,17 +162,30 @@ const Spanish = () => {
 
         {/* Illustration */}
         <Box
-          component="img"
-          src="/assets/spanish.jpg"
-          alt="Spanish illustration"
           sx={{
-            width: "50%",
-            height: "auto",
-            mt: { xs: 5, md: 0 },
-            p: 5,
-            borderRadius: 2,
+            display: "flex", // Usar flexbox para centrar la imagen
+            flex: 1, // Asegurar que ocupe el mismo espacio que el texto
+            minHeight: "400px", // Altura mínima para la imagen
+            justifyContent: "center", // Centrar horizontalmente
+            alignItems: "center", // Centrar verticalmente
+            width: "100%", // Asegurar que ocupe todo el ancho del contenedor
+            height: "100%", // Asegurar que ocupe todo el alto del contenedor
+            mt: { xs: 5, md: 0 }, // Margen superior para pantallas pequeñas
           }}
-        />
+        >
+          <Box
+            component="img"
+            src="/assets/spanish.jpg"
+            alt="Spanish illustration"
+            sx={{
+              width: "80%", // Asegurar que la imagen no exceda el ancho del contenedor
+              height: "auto", // Asegurar que la imagen no exceda el alto del contenedor
+              objectFit: "contain", // Ajustar la imagen para que mantenga su proporción
+              borderRadius: 2, // Bordes redondeados
+              boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Sombra para destacar la imagen
+            }}
+          />
+        </Box>
       </Container>
 
       {/* Botón Go Back */}

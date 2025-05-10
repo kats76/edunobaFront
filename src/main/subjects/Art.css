@@ -1,6 +1,6 @@
 /* Art.css */
 .art-container {
-    background-image: url('/public/assets/art.jpeg');
+    background-image: url('/public/assets/art.png');
     background-size: cover;
     background-position: center;
     min-height: 100vh;
